@@ -27,7 +27,17 @@ RSpec.describe Cell do
       @cell.place_ship(@cruiser)
       expect(@cell.ship).to eq(@cruiser)
       expect(@cell.empty?).to eq(false)
-      require 'pry'; binding.pry
+    end
+  end
+
+  describe "firing at cells" do
+    it "fires on a ship" do
+      @cell.place_ship(@cruiser)
+      expect(@cell.fired_upon?).to eq(false)
+
+      @cell.fire_upon
+      expect(@cell.ship.health).to eq(2)
+      expect(@cell.fired_upon?).to eq(true)
     end
   end
 
