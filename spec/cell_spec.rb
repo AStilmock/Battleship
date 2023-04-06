@@ -12,6 +12,12 @@ RSpec.describe Cell do
       expect(@cell).to be_an_instance_of(Cell)
       expect(@cruiser).to be_an_instance_of(Ship)
     end
+
+    it "checks cell data" do
+      expect(@cell.coordinate).to eq("B4")
+      expect(@cell.ship).to eq(nil)
+      expect(@cell.empty?).to eq(true)
+    end
   end
 
 end
