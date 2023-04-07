@@ -36,11 +36,11 @@ class Cell
     if ship_pos == false
       if fired_upon? == false then "."
       elsif fired_upon? == true && empty? then "M"
-      elsif fired_upon? == true && empty? == false then "H"
+      elsif fired_upon? == true && empty? == false && ship.sunk? == false then "H"
+      elsif ship.sunk? == true then "X"
       end
-    elsif 
-      ship_pos == true
-        "S"
+    elsif ship_pos == true
+      "S"
     end
   end
 end
