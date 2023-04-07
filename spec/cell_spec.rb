@@ -66,7 +66,7 @@ RSpec.describe Cell do
       cruiser.hit
       expect(cruiser.sunk?).to eq(true)
       expect(cell_2.render).to eq("X")
-      require 'pry'; binding.pry
+      # require 'pry'; binding.pry
     end
   end
 end
