@@ -32,10 +32,15 @@ class Cell
     end
   end
 
-  def render
-    if fired_upon? == false then "."
-    elsif fired_upon? == true && empty? then "M"
-    else "H"
+  def render(ship_pos = false)
+    if ship_pos == false
+      if fired_upon? == false then "."
+      elsif fired_upon? == true && empty? then "M"
+      elsif fired_upon? == true && empty? == false then "H"
+      end
+    elsif 
+      ship_pos == true
+        "S"
     end
   end
 end
