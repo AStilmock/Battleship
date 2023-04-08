@@ -24,4 +24,36 @@ class Board
       false
     end
   end
+
+  def valid_placement?(ship, coordinates = [])
+    if (coordinates.count == ship.length) && 
+      (!letter_validation(ship, coordinates) && number_validation(ship, coordinates)) || 
+      (letter_validation(ship, coordinates) && !number_validation(ship, coordinates))
+      true
+    else
+      false
+    end
+  end
+
+  def number_validation(ship, coordinates = [])
+    num_val = coordinates.map do |coord|
+      coord[1].to_i
+    end
+    if (1..4).each_cons(ship.length).include?(num_val)
+      true
+    else
+      false
+    end
+  end
+
+  def letter_validation(ship, coordinates = [])
+    let_val = coordinates.map do |coord|
+      coord[0]
+    end
+    if ("A".."D").each_cons(ship.length).include?(let_val)
+      true
+    else
+      false
+    end
+  end
 end

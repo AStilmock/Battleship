@@ -5,6 +5,7 @@ require "./lib/board"
 RSpec.describe Board do
   before(:each) do
     @board = Board.new
+    @board.make_cells
     @cruiser = Ship.new("Cruiser", 3)
     @submarine = Ship.new("Submarine", 2)
   end
@@ -37,7 +38,9 @@ RSpec.describe Board do
   end
   it "can check if coordinates are consecutive" do
     expect(@board.valid_placement?(@cruiser, ["A1", "A2", "A4"])).to be(false)
-    require 'pry'; binding.pry
+    expect(@board.valid_placement?(@submarine, ["A1", "C1"])).to be(false)
+    expect(@board.valid_placement?(@cruiser, ["A3", "A2", "A1"])).to be(false)
+    
   end
 
 end
