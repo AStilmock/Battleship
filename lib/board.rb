@@ -1,5 +1,9 @@
 class Board
   def cells
+    def initialize
+      @length = 4
+      @height = 4
+    end
     cells = {
       "A1" => Cell.new("A1"),
       "A2" => Cell.new("A2"),
@@ -27,8 +31,8 @@ class Board
     end
   end
 
-  def valid_placement?(ship, cells = [])
-    if ship.length == cells.count
+  def valid_placement?(ship, coordinates = [])
+    if ship.length == coordinates.count && coordinates.each_cons()
       true
     else
       false

@@ -5,6 +5,8 @@ require "./lib/board"
 RSpec.describe Board do
   before(:each) do
     @board = Board.new
+    @cruiser = Ship.new("Cruiser", 3)
+    @submarine = Ship.new("Submarine", 2)
   end
 
   describe "initialize" do
@@ -29,10 +31,13 @@ RSpec.describe Board do
 
   describe "valid placement" do
     it "can return if ship is a valid placement" do
-      cruiser = Ship.new("Cruiser", 3)
-      submarine = Ship.new("Submarine", 2)
-      expect(@board.valid_placement?(cruiser, ["A1", "A2"])).to be(false)
-      expect(@board.valid_placement?(submarine, ["A2", "A3", "A4"])).to be(false)
+      expect(@board.valid_placement?(@cruiser, ["A1", "A2"])).to be(false)
+      expect(@board.valid_placement?(@submarine, ["A2", "A3", "A4"])).to be(false)
     end
   end
+  it "can check if coordinates are consecutive" do
+    expect(@board.valid_placement?(@cruiser, ["A1", "A2", "A4"])).to be(false)
+    require 'pry'; binding.pry
+  end
+
 end
