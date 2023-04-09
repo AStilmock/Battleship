@@ -1,4 +1,5 @@
 class Board
+  attr_reader :ship
 
   def initialize
     @cells = {}
@@ -54,6 +55,12 @@ class Board
       true
     else
       false
+    end
+  end
+
+  def place(ship, coordinates = [])
+    coordinates.map do |coordinate|
+      cells[coordinate].place_ship(ship)
     end
   end
 end
