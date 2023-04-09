@@ -1,5 +1,4 @@
 class Cell
-
   attr_reader :coordinate, :ship, :fired_upon, :fire_upon
   def initialize(coordinate)
     @coordinate = coordinate
@@ -24,10 +23,13 @@ class Cell
   end
 
   def fire_upon
-    @fired_upon = true
     if empty?
+      @fired_upon = true
       "miss"
+    elsif fired_upon? == true
+      "space already fired on"
     else
+      @fired_upon = true
       @ship.hit
     end
   end
@@ -40,7 +42,12 @@ class Cell
       elsif ship.sunk? == true then "X"
       end
     elsif ship_pos == true
-      "S"
+      if empty? == false then "S"
+      elsif fired_upon? == false then "."
+      elsif fired_upon? == true && empty? then "M"
+      elsif fired_upon? == true && empty? == false && ship.sunk? == false then "H"
+      elsif ship.sunk? == true then "X"
+      end
     end
   end
 end
