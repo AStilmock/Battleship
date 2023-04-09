@@ -1,26 +1,59 @@
 class Board
 
   def initialize
+    @cells = {}
+  end
+
+  def make_cells
+    letters = "A".."D"
+    numbers = 1..4
+    letters.map do |letter|
+      numbers.map do |number|
+        @cells["#{letter}#{number}"] = Cell.new("#{letter}#{number}")
+      end
+    end
   end
 
   def cells
-    cells = {
-      "A1" => Cell.new("A1"),
-      "A2" => Cell.new("A2"),
-      "A3" => Cell.new("A3"),
-      "A4" => Cell.new("A4"),
-      "B1" => Cell.new("B1"),
-      "B2" => Cell.new("B2"),
-      "B3" => Cell.new("B3"),
-      "B4" => Cell.new("B4"),
-      "C1" => Cell.new("C1"),
-      "C2" => Cell.new("C2"),
-      "C3" => Cell.new("C3"),
-      "C4" => Cell.new("C4"),
-      "D1" => Cell.new("D1"),
-      "D2" => Cell.new("D2"),
-      "D3" => Cell.new("D3"),
-      "D4" => Cell.new("D4")
-    }
+    @cells
+  end    
+    
+  def valid_coordinate?(coordinate)
+    if @cells.has_key?(coordinate) then true
+    else 
+      false
+    end
+  end
+
+  def valid_placement?(ship, coordinates = [])
+    if (coordinates.count == ship.length) && 
+      (!letter_validation(ship, coordinates) && number_validation(ship, coordinates)) || 
+      (letter_validation(ship, coordinates) && !number_validation(ship, coordinates))
+      true
+    else
+      false
+    end
+  end
+
+  def number_validation(ship, coordinates = [])
+    num_val = coordinates.map do |coord|
+      coord[1].to_i
+    end
+    if (1..4).each_cons(ship.length).include?(num_val)
+      true
+    else
+      false
+    end
+  end
+
+  def letter_validation(ship, coordinates = [])
+    let_val = coordinates.map do |coord|
+      coord[0]
+    end
+    if ("A".."D").each_cons(ship.length).include?(let_val)
+      true
+    else
+      false
+    end
   end
 end
