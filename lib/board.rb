@@ -27,10 +27,10 @@ class Board
   end
 
   def valid_placement?(ship, coordinates = [])
-    if (coordinates.count == ship.length) && 
+    if (coordinates.count == ship.length) &&
       (!letter_validation(ship, coordinates) && number_validation(ship, coordinates)) || 
       (letter_validation(ship, coordinates) && !number_validation(ship, coordinates))
-      true
+      placement_overlap(ship, coordinates)
     else
       false
     end
@@ -63,4 +63,11 @@ class Board
       cells[coordinate].place_ship(ship)
     end
   end
+
+  def placement_overlap(ship, coordinates = [])
+    coordinates.all? do |coordinate|
+      @cells[coordinate].empty?
+    end
+  end
+
 end
