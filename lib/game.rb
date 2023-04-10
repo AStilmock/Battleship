@@ -1,6 +1,6 @@
 class Game
 
-attr_reader :player, :computer
+attr_reader :board, :player, :computer
   def initialize
     @board              = Board.new
     @player             = Player.new
