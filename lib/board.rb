@@ -2,9 +2,6 @@ class Board
   attr_reader :ship
   def initialize
     @cells = {}
-  end
-
-  def make_cells
     letters = "A".."D"
     numbers = 1..4
     letters.map do |letter|
@@ -13,6 +10,16 @@ class Board
       end
     end
   end
+
+  # def make_cells
+  #   letters = "A".."D"
+  #   numbers = 1..4
+  #   letters.map do |letter|
+  #     numbers.map do |number|
+  #       @cells["#{letter}#{number}"] = Cell.new("#{letter}#{number}")
+  #     end
+  #   end
+  # end
 
   def cells
     @cells

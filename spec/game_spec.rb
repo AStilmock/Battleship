@@ -6,13 +6,17 @@ require "./lib/player"
 require "./lib/computer"
 require "./lib/messages"
 
-RSpec.describe Board do
+RSpec.describe Game do
   before(:each) do
     @game = Game.new
   end
   describe "initialize" do
     it "exists" do
+      # require 'pry'; binding.pry
       expect(@game).to be_an_instance_of(Game)
+    end
+    it "can play" do
+      @game.start_game
     end
   end
 end
