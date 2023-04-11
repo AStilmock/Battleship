@@ -1,8 +1,7 @@
 class Game
-  
-  attr_reader :board, :player, :computer
+  require "json"
+  attr_reader :board, :player, :computer, :place_ship, :valid_placement, :coordinates, :count
   def initialize
-    @board = Board.new
     @player = Player.new
     @player_cruiser = Ship.new("Cruiser", 3)
     @player_submarine = Ship.new("Submarine", 2)
@@ -28,14 +27,14 @@ class Game
   end
 
   def player_place_ship
-    @player_ships.each do |ship|
-      p "please choose #{ship.length} coordinates for your #{ship.name}" 
-      coordinates = gets.chomp
-      if @player.board.valid_placement?(ship, coordinates = [])
-        @player.board.place(ship, coordinates = [])
-      else
-        "These coordinates are invalid - please choose other coordinates to place your #{ship}"
+    @player_ships.map do |ship|
+      until @player.board.valid_placement?(ship, coordinates = []) == true
+        p "please choose #{ship.length} coordinates for your #{ship.name}"
+        # coordinates = []
+        coordinates = gets.chomp.split
+        p "These coordinates are invalid - please choose other coordinates to place your #{ship.name}"
       end
+      @player.board.place(ship, coordinates = [])
     end
   end
 

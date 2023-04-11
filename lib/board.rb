@@ -1,25 +1,17 @@
 class Board
-  attr_reader :ship
+  attr_reader :ship, :valid_placement, :coordinates, :count
   def initialize
     @cells = {}
-    letters = "A".."D"
-    numbers = 1..4
-    letters.map do |letter|
-      numbers.map do |number|
-        @cells["#{letter}#{number}"] = Cell.new("#{letter}#{number}")
+    def make_cells
+      letters = "A".."D"
+      numbers = 1..4
+      letters.map do |letter|
+        numbers.map do |number|
+          @cells["#{letter}#{number}"] = Cell.new("#{letter}#{number}")
+        end
       end
     end
   end
-
-  # def make_cells
-  #   letters = "A".."D"
-  #   numbers = 1..4
-  #   letters.map do |letter|
-  #     numbers.map do |number|
-  #       @cells["#{letter}#{number}"] = Cell.new("#{letter}#{number}")
-  #     end
-  #   end
-  # end
 
   def cells
     @cells
@@ -35,7 +27,7 @@ class Board
   def valid_placement?(ship, coordinates = [])
     if (coordinates.count == ship.length) &&
       (!letter_validation(ship, coordinates) && number_validation(ship, coordinates)) || 
-      (letter_validation(ship, coordinates) && !number_validation(ship, coordinates))
+      (letter_validation(ship, coordinates) && !number_validation(ship, coordinates)) 
       placement_overlap(ship, coordinates)
     else
       false
@@ -66,7 +58,7 @@ class Board
 
   def place(ship, coordinates = [])
     coordinates.map do |coordinate|
-      cells[coordinate].place_ship(ship)
+      @cells[coordinate].place_ship(ship)
     end
   end
 
