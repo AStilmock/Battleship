@@ -81,7 +81,7 @@ class Board
   end
 
   def placement_overlap(ship, coordinates)
-    coordinates.any? do |coordinate|
+    coordinates.all? do |coordinate|
       # require 'pry'; binding.pry
       @cells[coordinate].empty?
     end

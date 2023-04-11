@@ -30,18 +30,7 @@ class Game
     end
   end
 
-  def player_place_ship
-    @player_ships.each do |ship|
-      p "please choose #{ship.length} coordinates for your #{ship.name}"
-      coordinates = gets.chomp.split
-      if @player_board.valid_placement?(ship, coordinates) == true
-        @player_board.place(ship, coordinates)
-      else
-        p "These coordinates are invalid - please choose other coordinates to place your #{ship.name}"
-      end
-    end
-    @player_board.render(ship_pos = true)
-  end
+  
 
   def computer_place_ship
     valid_placement(ship, coordinates = [])
