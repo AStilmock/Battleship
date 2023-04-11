@@ -1,18 +1,22 @@
 class Game
-  require "json"
+  # require "json"
   attr_reader :board, :player, :computer, :place_ship, :valid_placement, :coordinates, :count
   def initialize
     @player = Player.new
+    @player_board = Board.new
     @player_cruiser = Ship.new("Cruiser", 3)
     @player_submarine = Ship.new("Submarine", 2)
     @player_ships = [@player_cruiser, @player_submarine]
     @computer = Computer.new
+    @computer_board = Board.new
     @computer_cruiser = Ship.new("Cruiser", 3)
     @computer_submarine = Ship.new("Submarine", 2)
     @computer_ships = [@computer_cruiser, @computer_submarine]
   end
 
   def start_game
+    @player_board
+    @computer_board
     # require 'pry'; binding.pry
     p "Welcome to BATTLESHIP\n"
     p "Enter p to play q to quit"
@@ -27,15 +31,16 @@ class Game
   end
 
   def player_place_ship
-    @player_ships.map do |ship|
-      until @player.board.valid_placement?(ship, coordinates = []) == true
-        p "please choose #{ship.length} coordinates for your #{ship.name}"
-        # coordinates = []
-        coordinates = gets.chomp.split
+    @player_ships.each do |ship|
+      p "please choose #{ship.length} coordinates for your #{ship.name}"
+      coordinates = gets.chomp.split
+      if @player_board.valid_placement?(ship, coordinates) == true
+        @player_board.place(ship, coordinates)
+      else
         p "These coordinates are invalid - please choose other coordinates to place your #{ship.name}"
       end
-      @player.board.place(ship, coordinates = [])
     end
+    @player_board.render(ship_pos = true)
   end
 
   def computer_place_ship
@@ -46,9 +51,6 @@ class Game
 
 
   def turn
-    # # @computer_place_ship
-    # p "The computer has placed its ships\n"
-    # @player_place_ship
     # Displaying the boards
     # render(ship_pos = false)
     # render(ship_pos = true)

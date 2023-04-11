@@ -12,7 +12,6 @@ RSpec.describe Game do
   end
   describe "initialize" do
     it "exists" do
-      # require 'pry'; binding.pry
       expect(@game).to be_an_instance_of(Game)
     end
     it "can play" do
