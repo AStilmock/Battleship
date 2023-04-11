@@ -17,17 +17,30 @@ class Game
   def start_game
     @player_board
     @computer_board
-    # require 'pry'; binding.pry
     p "Welcome to BATTLESHIP\n"
     p "Enter p to play q to quit"
     start = gets.chomp
     if start == "p"
-      # computer_place_ship
       p "The computer has placed its ships"
       player_place_ship
     elsif
       p "Quit"
     end
+  end
+
+  def player_place_ship
+    @player_ships.each do |ship|
+      p "please choose #{ship.length} coordinates for your #{ship.name}"
+      coordinates = gets.chomp.split
+      until valid_placement = @player_board.valid_placement?(ship, coordinates) == true
+        p "These coordinates are invalid - please choose other coordinates to place your #{ship.name}"
+        coordinates = gets.chomp.split
+      end
+      if valid_placement == true
+        @player_board.place(ship, coordinates)
+      end
+    end
+    @player_board.render(ship_pos = true)
   end
 
   
