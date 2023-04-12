@@ -1,5 +1,5 @@
 class Cell
-  attr_reader :coordinate, :ship, :fired_upon, :fire_upon
+  attr_reader :coordinate, :ship, :fired_upon, :fire_upon, :valid_shot
   def initialize(coordinate)
     @coordinate = coordinate
     @ship = nil
@@ -23,24 +23,18 @@ class Cell
   end
 
   def fire_upon
-    valid_shot = false
-    until valid_shot == true
-      if fired_upon == true
-        p "space already fired on"
-        valid_shot = false
-      end
-      if empty?
-        @fired_upon = true
-        p "your shot on #{coordinate} was a miss"
-        valid_shot = true
-      else
-        @fired_upon = true
-        @ship.hit
-        p "your shot on #{coordinate} was a hit"
-        valid_shot = true
-        if ship.sunk?
-          p "The #{ship} was sunk"
-        end
+    if fired_upon == true
+      p "space already fired on"
+    end
+    if empty?
+      @fired_upon = true
+      p "your shot on #{coordinate} was a miss"
+    else
+      @fired_upon = true
+      @ship.hit
+      p "your shot on #{coordinate} was a hit"
+      if ship.sunk?
+        p "The #{ship.name} was sunk"
       end
     end
   end
