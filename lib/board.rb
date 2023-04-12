@@ -1,5 +1,5 @@
 class Board
-  attr_reader :ship, :valid_placement, :coordinates, :count
+  attr_reader :cells, :ship, :valid_placement, :coordinates, :count
   def initialize
     @cells = {
       "A1" => Cell.new("A1"),
@@ -36,23 +36,29 @@ class Board
   end    
     
   def valid_coordinate?(coordinate)
-    if @cells.has_key?(coordinate) then true
+    if @cells.has_key?(coordinate)
+      true
     else 
       false
     end
   end
 
   def valid_placement?(ship, coordinates)
-    if (coordinates.count == ship.length) &&
-      (!letter_validation(ship, coordinates) && number_validation(ship, coordinates)) || 
-      (letter_validation(ship, coordinates) && !number_validation(ship, coordinates)) 
-      placement_overlap(ship, coordinates)
-    else
-      false
-    end
+    # valid_length(ship, coordinates) && valid_consecutive(ship, coordinates)
+    # placement_overlap(ship, coordinates)
+    # 
+    return false unless (ship.length == coordinates.count)
+    return false unless !letter_validation(ship, coordinates) && number_validation(ship, coordinates) || 
+      letter_validation(ship, coordinates) && !number_validation(ship, coordinates)
+    return false unless placement_overlap(ship, coordinates)
+    true
   end
 
-  def number_validation(ship, coordinates)
+  def valid_length(ship, coordinates)
+    ship.length == coordinates.count
+  end
+
+  def numbers_consecutive_validation(ship, coordinates)
     num_val = coordinates.map do |coord|
       coord[1].to_i
     end
@@ -63,15 +69,19 @@ class Board
     end
   end
 
-  def letter_validation(ship, coordinates)
+  def letters_consecute_validation(ship, coordinates)
     let_val = coordinates.map do |coord|
-      coord[0]
+      coord[0].ord
     end
-    if ("A".."D").each_cons(ship.length).include?(let_val)
-      true
-    else
-      false
+    let_val.each_cons(2).all? do |a,b|
+      b == a + 1
     end
+  end
+  
+  def valid_consecutive(ship, coordinates)
+    (numbers_consecutive_validation(ship, coordinates) && !letters_consecute_validation(ship, coordinates)) ||
+    (!numbers_consecutive_validation(ship, coordinates) && letters_consecute_validation(ship, coordinates))
+
   end
 
   def place(ship, coordinates)

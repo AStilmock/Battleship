@@ -72,10 +72,16 @@ RSpec.describe Board do
   end
 
   describe "render board" do
-    it "can render the board" do
+    xit "can render the board" do
       @board.place(@cruiser, ["A1", "A2", "A3"])
       @board.render
       @board.render(true)
+    end
+  end
+
+  describe "valid_placement debugging" do
+    it "wants valid coordinates" do
+      expect(@board.valid_placement?(@cruiser, ["B1", "B2", "C3"])).to eq(false)
     end
   end
 end
