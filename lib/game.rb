@@ -1,5 +1,5 @@
 class Game
-  attr_reader :board, :player, :computer, :place_ship, :valid_placement, :coordinates, :count
+  attr_reader :board, :player, :computer, :place_ship, :valid_placement, :coordinates, :count, :valid_shot
   def initialize
     @player = Player.new
     @player_ships = [@player.cruiser, @player.submarine]
@@ -15,11 +15,10 @@ class Game
       p "The computer has placed its ships"
       computer_place_ship
       player_place_ship
+      turn
     elsif
       p "Quit"
     end
-    # @computer.board.render(false)
-    # @player.board.render(true)
   end
 
   def player_place_ship
@@ -49,7 +48,13 @@ class Game
     @computer.board.render(true)
   end
   
-
+  def game_over
+    if computer.cruiser.sunk? && computer.submarine.sunk?
+      p "You win!!!"
+    elsif player.cruiser.sunk? && player.submarine.sunk?
+      p "You loose"
+    end
+  end
 
   def turn
     until game_over do
@@ -66,8 +71,8 @@ class Game
       end
       @computer.board.cells[coord].fire_upon
       p "The computer has fired a shot"
-      require 'pry'; binding.pry
-      @player.board.cells.keys.sample(1).fire_upon
+      coord = @player.board.cells.keys.sample
+      @player.board.cells[coord].fire_upon
     end
   end
 end
