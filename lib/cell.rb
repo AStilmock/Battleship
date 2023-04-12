@@ -6,32 +6,26 @@ class Cell
     @fired_upon = false
   end
 
-  def empty?
-    if @ship == nil
-      true
-    else
-      false
-    end
-  end
-
-  def place_ship(ship_type)
-    @ship = ship_type
-  end
-
-  def fired_upon?
-    @fired_upon
-  end
-
   def fire_upon
-    if empty?
-      @fired_upon = true
-      # p "miss"
-    elsif fired_upon? == true
-      # p "space already fired on"
-    else
-      @fired_upon = true
-      @ship.hit
-      # p "hit!"
+    valid_shot = false
+    until valid_shot == true
+      if fired_upon == true
+        p "space already fired on"
+        valid_shot = false
+      end
+      if empty?
+        @fired_upon = true
+        p "your shot on #{coordinate} was a miss"
+        valid_shot = true
+      else
+        @fired_upon = true
+        @ship.hit
+        p "your shot on #{coordinate} was a hit"
+        valid_shot = true
+        if ship.sunk?
+          p "The #{ship} was sunk"
+        end
+      end
     end
   end
 
