@@ -52,17 +52,23 @@ class Game
 
 
   def turn
-    # Displaying the boards
-    # render(ship_pos = false)
-    # render(ship_pos = true)
-    # # Player choosing a coordinate to fire on
-    # fire_upon method?
-    # # Computer choosing a coordinate to fire on
-    # fire_upon method?
-    # # Reporting the result of the Player’s shot
-    # return hit/miss from fire_upon method?
-    # # Reporting the result of the Computer’s shot
-    # return hit/miss from fire_upon method?
+    until game_over do
+      p "=============COMPUTER BOARD============="
+      @computer.board.render
+      p "==============PLAYER BOARD=============="
+      @player.board.render(true)
+      p "Enter the coordinates for your shot"
+      coord = nil
+      coord = gets.chomp
+      until @computer.board.valid_coordinate?(coord) == true
+        p "Invalid coordinates, please choose a coordinate for your shot"
+        coord = gets.chomp
+      end
+      @computer.board.cells[coord].fire_upon
+      p "The computer has fired a shot"
+      require 'pry'; binding.pry
+      @player.board.cells.keys.sample(1).fire_upon
+    end
   end
 end
 
