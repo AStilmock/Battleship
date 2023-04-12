@@ -1,5 +1,5 @@
 class Board
-  attr_reader :ship, :valid_placement, :coordinates, :count
+  attr_reader :cells, :ship, :valid_placement, :coordinates, :count
   def initialize
     @cells = {
       "A1" => Cell.new("A1"),
@@ -36,42 +36,78 @@ class Board
   end    
     
   def valid_coordinate?(coordinate)
-    if @cells.has_key?(coordinate) then true
+    if @cells.has_key?(coordinate)
+      true
     else 
       false
     end
   end
 
   def valid_placement?(ship, coordinates)
-    if (coordinates.count == ship.length) &&
-      (!letter_validation(ship, coordinates) && number_validation(ship, coordinates)) || 
-      (letter_validation(ship, coordinates) && !number_validation(ship, coordinates)) 
-      placement_overlap(ship, coordinates)
-    else
-      false
-    end
+    placement_overlap(ship, coordinates) && valid_length(ship, coordinates) && 
+    (valid_consecutive(ship, coordinates) && valid_uniq(ship, coordinates))
   end
 
-  def number_validation(ship, coordinates)
+  def valid_length(ship, coordinates)
+    ship.length == coordinates.count
+  end
+
+  def numbers_consecutive_validation(ship, coordinates)
     num_val = coordinates.map do |coord|
       coord[1].to_i
     end
-    if (1..4).each_cons(ship.length).include?(num_val)
+    num_val.each_cons(2).all? do |a,b|
+      b == a + 1
+    end
+  end
+
+  def letters_consecutive_validation(ship, coordinates)
+    let_val = coordinates.map do |coord|
+      coord[0].ord
+    end
+    let_val.each_cons(2).all? do |a,b|
+      b == a + 1
+    end
+  end
+  
+  def valid_consecutive(ship, coordinates)
+    (numbers_consecutive_validation(ship, coordinates) && !letters_consecutive_validation(ship, coordinates)) ||
+    (!numbers_consecutive_validation(ship, coordinates) && letters_consecutive_validation(ship, coordinates))
+  end
+
+  def number_uniq(ship, coordinates)
+    num_check = coordinates.map do |coord|
+      coord[1].to_i
+    end
+    numbers = []
+    num_check.each do |num|
+      numbers << num
+    end
+    if numbers.uniq.count == 1
       true
     else
       false
     end
   end
 
-  def letter_validation(ship, coordinates)
-    let_val = coordinates.map do |coord|
-      coord[0]
+  def letter_uniq(ship, coordinates)
+    let_check = coordinates.map do |coord|
+      coord[0].ord
     end
-    if ("A".."D").each_cons(ship.length).include?(let_val)
+    letters = []
+    let_check.each do |let|
+      letters << let
+    end
+    if letters.uniq.count == 1
       true
     else
       false
     end
+  end
+
+  def valid_uniq(ship, coordinates)
+    (number_uniq(ship, coordinates) && !letter_uniq(ship, coordinates)) ||
+    (!number_uniq(ship, coordinates) && letter_uniq(ship, coordinates))
   end
 
   def place(ship, coordinates)

@@ -1,55 +1,54 @@
 class Game
-  # require "json"
   attr_reader :board, :player, :computer, :place_ship, :valid_placement, :coordinates, :count
   def initialize
     @player = Player.new
-    @player_board = Board.new
-    @player_cruiser = Ship.new("Cruiser", 3)
-    @player_submarine = Ship.new("Submarine", 2)
-    @player_ships = [@player_cruiser, @player_submarine]
+    @player_ships = [@player.cruiser, @player.submarine]
     @computer = Computer.new
-    @computer_board = Board.new
-    @computer_cruiser = Ship.new("Cruiser", 3)
-    @computer_submarine = Ship.new("Submarine", 2)
-    @computer_ships = [@computer_cruiser, @computer_submarine]
+    @computer_ships = [@computer.cruiser, @computer.submarine]
   end
 
   def start_game
-    @player_board
-    @computer_board
     p "Welcome to BATTLESHIP\n"
     p "Enter p to play q to quit"
     start = gets.chomp
     if start == "p"
       p "The computer has placed its ships"
+      computer_place_ship
       player_place_ship
     elsif
       p "Quit"
     end
+    # @computer.board.render(false)
+    # @player.board.render(true)
   end
 
   def player_place_ship
-    @player_ships.each do |ship|
+    @player_ships.map do |ship|
       p "please choose #{ship.length} coordinates for your #{ship.name}"
-      coordinates = gets.chomp.split
-      until valid_placement = @player_board.valid_placement?(ship, coordinates) == true
+      coordinates = gets.chomp.upcase.split
+      until valid_placement = @player.board.valid_placement?(ship, coordinates) == true do
         p "These coordinates are invalid - please choose other coordinates to place your #{ship.name}"
-        coordinates = gets.chomp.split
+        coordinates = gets.chomp.upcase.split
       end
       if valid_placement == true
-        @player_board.place(ship, coordinates)
+        @player.board.place(ship, coordinates)
       end
     end
-    @player_board.render(ship_pos = true)
+    @player.board.render(ship_pos = true)
   end
-
-  
 
   def computer_place_ship
-    valid_placement(ship, coordinates = [])
-    # randomize place method?
-    computer_ships.rand()
+    @computer_ships.map do |ship|
+      coordinates = [] 
+      until @computer.board.valid_placement?(ship, coordinates) do
+        coordinates = @computer.board.cells.keys.sample(ship.length)
+      end
+        coordinates
+        @computer.board.place(ship, coordinates)
+    end
+    @computer.board.render(true)
   end
+  
 
 
   def turn

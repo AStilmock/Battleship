@@ -25,12 +25,13 @@ class Cell
   def fire_upon
     if empty?
       @fired_upon = true
-      "miss"
+      # p "miss"
     elsif fired_upon? == true
-      "space already fired on"
+      # p "space already fired on"
     else
       @fired_upon = true
       @ship.hit
+      # p "hit!"
     end
   end
 

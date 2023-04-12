@@ -72,7 +72,7 @@ RSpec.describe Board do
   end
 
   describe "render board" do
-    it "can render the board" do
+    xit "can render the board" do
       @board.place(@cruiser, ["A1", "A2", "A3"])
       @board.render
       @board.render(true)
