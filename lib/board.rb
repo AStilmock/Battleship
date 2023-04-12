@@ -44,14 +44,8 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
-    # valid_length(ship, coordinates) && valid_consecutive(ship, coordinates)
-    # placement_overlap(ship, coordinates)
-    # 
-    return false unless (ship.length == coordinates.count)
-    return false unless !letter_validation(ship, coordinates) && number_validation(ship, coordinates) || 
-      letter_validation(ship, coordinates) && !number_validation(ship, coordinates)
-    return false unless placement_overlap(ship, coordinates)
-    true
+    placement_overlap(ship, coordinates) && valid_length(ship, coordinates) && 
+    (valid_consecutive(ship, coordinates) && valid_uniq(ship, coordinates))
   end
 
   def valid_length(ship, coordinates)
@@ -62,14 +56,12 @@ class Board
     num_val = coordinates.map do |coord|
       coord[1].to_i
     end
-    if (1..4).each_cons(ship.length).include?(num_val)
-      true
-    else
-      false
+    num_val.each_cons(2).all? do |a,b|
+      b == a + 1
     end
   end
 
-  def letters_consecute_validation(ship, coordinates)
+  def letters_consecutive_validation(ship, coordinates)
     let_val = coordinates.map do |coord|
       coord[0].ord
     end
@@ -79,9 +71,43 @@ class Board
   end
   
   def valid_consecutive(ship, coordinates)
-    (numbers_consecutive_validation(ship, coordinates) && !letters_consecute_validation(ship, coordinates)) ||
-    (!numbers_consecutive_validation(ship, coordinates) && letters_consecute_validation(ship, coordinates))
+    (numbers_consecutive_validation(ship, coordinates) && !letters_consecutive_validation(ship, coordinates)) ||
+    (!numbers_consecutive_validation(ship, coordinates) && letters_consecutive_validation(ship, coordinates))
+  end
 
+  def number_uniq(ship, coordinates)
+    num_check = coordinates.map do |coord|
+      coord[1].to_i
+    end
+    numbers = []
+    num_check.each do |num|
+      numbers << num
+    end
+    if numbers.uniq.count == 1
+      true
+    else
+      false
+    end
+  end
+
+  def letter_uniq(ship, coordinates)
+    let_check = coordinates.map do |coord|
+      coord[0].ord
+    end
+    letters = []
+    let_check.each do |let|
+      letters << let
+    end
+    if letters.uniq.count == 1
+      true
+    else
+      false
+    end
+  end
+
+  def valid_uniq(ship, coordinates)
+    (number_uniq(ship, coordinates) && !letter_uniq(ship, coordinates)) ||
+    (!number_uniq(ship, coordinates) && letter_uniq(ship, coordinates))
   end
 
   def place(ship, coordinates)

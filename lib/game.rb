@@ -14,21 +14,21 @@ class Game
     if start == "p"
       p "The computer has placed its ships"
       computer_place_ship
-      # player_place_ship
+      player_place_ship
     elsif
       p "Quit"
     end
-    # @computer.board.render(true)
+    # @computer.board.render(false)
     # @player.board.render(true)
   end
 
   def player_place_ship
     @player_ships.map do |ship|
       p "please choose #{ship.length} coordinates for your #{ship.name}"
-      coordinates = gets.chomp.split
+      coordinates = gets.chomp.upcase.split
       until valid_placement = @player.board.valid_placement?(ship, coordinates) == true do
         p "These coordinates are invalid - please choose other coordinates to place your #{ship.name}"
-        coordinates = gets.chomp.split
+        coordinates = gets.chomp.upcase.split
       end
       if valid_placement == true
         @player.board.place(ship, coordinates)
@@ -38,11 +38,8 @@ class Game
   end
 
   def computer_place_ship
-    # cells = @computer.board.cells.keys
     @computer_ships.map do |ship|
       coordinates = [] 
-      # = cells.sample(ship.length)
-      # require 'pry'; binding.pry
       until @computer.board.valid_placement?(ship, coordinates) do
         coordinates = @computer.board.cells.keys.sample(ship.length)
       end
@@ -52,21 +49,6 @@ class Game
     @computer.board.render(true)
   end
   
-
-  # def computer_valid_coordinates(ship)
-  #   cells = @computer.board.cells.keys
-  #   coordinates_array = []
-  #   # @computer_ships.map do |ship|
-  #   # coordinates = cells.sample(ship.length)
-  #   while @computer.board.valid_placement?(ship, coordinates_array) == false do
-  #     coordinates_array = cells.sample(ship.length)
-  #   end
-  #   coordinates_array
-  # end
-
-  # def computer_ship(ship)
-  #   @computer.board.place(ship, computer_valid_coordinates(ship))
-  # end
 
 
   def turn

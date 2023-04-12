@@ -78,10 +78,4 @@ RSpec.describe Board do
       @board.render(true)
     end
   end
-
-  describe "valid_placement debugging" do
-    it "wants valid coordinates" do
-      expect(@board.valid_placement?(@cruiser, ["B1", "B2", "C3"])).to eq(false)
-    end
-  end
 end
