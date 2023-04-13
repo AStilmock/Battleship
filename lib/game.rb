@@ -25,7 +25,7 @@ class Game
     game = Game.new
     @player = Player.new
     @computer = Computer.new
-    @game.start_game
+    game.start_game
   end
 
   def player_place_ship
