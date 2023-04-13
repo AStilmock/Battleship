@@ -21,6 +21,21 @@ class Game
     end
   end
 
+  def restart
+    game = Game.new
+    @player = Player.new
+    @player.board = Board.new
+    @player.cruiser = Ship.new("Cruiser", 3)
+    @player.submarine = Ship.new("Submarine")
+    @player_ships = [@player.cruiser, @player.submarine]
+    @computer = Computer.new
+    @computer.board = Board.new
+    @computer.cruiser = Ship.new("Cruiser", 3)
+    @computer.submarine = Ship.new("Submarine")
+    @computer_ships = [@computer.cruiser, @computer.submarine]
+    game.start_game
+  end
+
   def player_place_ship
     @player_ships.map do |ship|
       p "please choose #{ship.length} coordinates for your #{ship.name}"
@@ -51,7 +66,7 @@ class Game
     if computer.cruiser.sunk? && computer.submarine.sunk?
       p "You win!!!"
       game_over = true
-      start_game
+      restart
       p "=============COMPUTER BOARD============="
       @computer.board.render
       p "==============PLAYER BOARD=============="
@@ -60,7 +75,7 @@ class Game
       p "You loose"
       `say -v Bad "di di di di di di di di di di di di di di di di di di di di di di di di di di di di di di di di"`
       game_over = true
-      start_game
+      restart
     end
   end
 

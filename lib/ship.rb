@@ -15,7 +15,6 @@ class Ship
       false
     else
       true
-      # p "You sunk my ship!"
     end
   end
 

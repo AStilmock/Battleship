@@ -20,24 +20,14 @@ class Board
       "D4" => Cell.new("D4")
     }
   end
-
-    # def make_cells
-    #   letters = "A".."D"
-    #   numbers = 1..4
-    #   letters.map do |letter|
-    #     numbers.map do |number|
-    #       @cells["#{letter}#{number}"] = Cell.new("#{letter}#{number}")
-    #     end
-    #   end
   
-
   def cells
     @cells
   end    
     
   def valid_coordinate?(coordinate)
-    if cells.has_key?(coordinate)
-      # cells[coordinate].fired_upon? == false &&
+    if cells.has_key?(coordinate) &&
+      (cells[coordinate].fired_upon? == false)
       true
     else
       false
@@ -45,8 +35,9 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
-    placement_overlap(ship, coordinates) && valid_length(ship, coordinates) && 
-    (valid_consecutive(ship, coordinates) && valid_uniq(ship, coordinates))
+    valid_length(ship, coordinates) && 
+    (valid_consecutive(ship, coordinates) && valid_uniq(ship, coordinates)) &&
+    placement_overlap(ship, coordinates)
   end
 
   def valid_length(ship, coordinates)
