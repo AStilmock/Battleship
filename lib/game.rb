@@ -1,5 +1,5 @@
 class Game
-  attr_reader :board, :player, :computer, :place_ship, :valid_placement, :coordinates, :count, :valid_shot
+  attr_reader :board, :player, :computer
   def initialize
     @player = Player.new
     @player_ships = [@player.cruiser, @player.submarine]
@@ -66,7 +66,7 @@ class Game
     if computer.cruiser.sunk? && computer.submarine.sunk?
       p "You win!!!"
       game_over = true
-      restart
+      start_game
       p "=============COMPUTER BOARD============="
       @computer.board.render
       p "==============PLAYER BOARD=============="
@@ -75,7 +75,7 @@ class Game
       p "You loose"
       `say -v Bad "di di di di di di di di di di di di di di di di di di di di di di di di di di di di di di di di"`
       game_over = true
-      restart
+      start_game
     end
   end
 
