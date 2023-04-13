@@ -1,5 +1,8 @@
+require "./lib/messages"
+
 class Cell
-  attr_reader :coordinate, :ship, :fired_upon, :fire_upon
+include Messageable
+  attr_reader :coordinate, :ship, :fired_upon, :fire_upon, :valid_shot
   def initialize(coordinate)
     @coordinate = coordinate
     @ship = nil
@@ -22,25 +25,36 @@ class Cell
     @fired_upon
   end
 
-  def fire_upon
-    valid_shot = false
-    until valid_shot == true
-      if fired_upon == true
-        p "space already fired on"
-        valid_shot = false
+  def player_fire_upon
+    if fired_upon == true
+      p "space already fired on"
+    end
+    if empty?
+      @fired_upon = true
+      player_miss_message
+    else
+      @fired_upon = true
+      @ship.hit
+      player_hit_message
+      if ship.sunk?
+        p "My #{ship.name} was sunk"
       end
-      if empty?
-        @fired_upon = true
-        p "your shot on #{coordinate} was a miss"
-        valid_shot = true
-      else
-        @fired_upon = true
-        @ship.hit
-        p "your shot on #{coordinate} was a hit"
-        valid_shot = true
-        if ship.sunk?
-          p "The #{ship} was sunk"
-        end
+    end
+  end
+
+  def computer_fire_upon
+    if fired_upon == true
+      p "space already fired on"
+    end
+    if empty?
+      @fired_upon = true
+      computer_miss_message
+    else
+      @fired_upon = true
+      @ship.hit
+      computer_hit_message
+      if ship.sunk?
+        p "Your #{ship.name} was sunk"
       end
     end
   end

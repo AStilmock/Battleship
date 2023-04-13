@@ -1,5 +1,5 @@
 class Board
-  attr_reader :cells, :ship, :valid_placement, :coordinates, :count
+  attr_reader :cells, :ship, :valid_placement, :coordinates, :count, :fire_upon, :fired_upon
   def initialize
     @cells = {
       "A1" => Cell.new("A1"),
@@ -36,9 +36,10 @@ class Board
   end    
     
   def valid_coordinate?(coordinate)
-    if @cells.has_key?(coordinate)
+    if cells.has_key?(coordinate) && 
+      (cells[coordinate].fired_upon? == false)
       true
-    else 
+    else
       false
     end
   end
