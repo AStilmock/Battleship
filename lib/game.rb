@@ -65,7 +65,7 @@ class Game
       p "Enter the coordinates for your shot"
       coord = nil
       coord = gets.chomp
-      until @computer.board.valid_coordinate?(coord) == true
+      until @computer.board.cells[coord].fired_upon? == false && @computer.board.valid_coordinate?(coord) == true
         p "Invalid coordinates, please choose a coordinate for your shot"
         coord = gets.chomp
       end
