@@ -67,7 +67,7 @@ include Messageable
       elsif ship.sunk? == true then "X"
       end
     elsif ship_pos == true
-      if empty? == false then "S"
+      if empty? == false && fired_upon? == false then "S"
       elsif fired_upon? == false then "."
       elsif fired_upon? == true && empty? then "M"
       elsif fired_upon? == true && empty? == false && ship.sunk? == false then "H"
