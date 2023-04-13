@@ -48,26 +48,34 @@ class Game
     @computer.board.render(true)
   end
   
-  def game_over
+  def game_over?
+    false
     if computer.cruiser.sunk? && computer.submarine.sunk?
       p "You win!!!"
+      game_over = true
+      p "=============COMPUTER BOARD============="
+      @computer.board.render
+      p "==============PLAYER BOARD=============="
+      @player.board.render(true)
     elsif player.cruiser.sunk? && player.submarine.sunk?
       p "You loose"
+      `say -v Bad "di di di di di di di di di di di di di di di di di di di di di di di di di di di di di di di di"`
+      game_over = true
     end
   end
 
   def turn
-    until game_over do
+    until game_over? == true do
       p "=============COMPUTER BOARD============="
       @computer.board.render
       p "==============PLAYER BOARD=============="
       @player.board.render(true)
       p "Enter the coordinates for your shot"
       coord = nil
-      coord = gets.chomp
+      coord = gets.chomp.upcase
       until @computer.board.cells[coord].fired_upon? == false && @computer.board.valid_coordinate?(coord) == true
         p "Invalid coordinates, please choose a coordinate for your shot"
-        coord = gets.chomp
+        coord = gets.chomp.upcase
       end
       @computer.board.cells[coord].fire_upon
       p "The computer has fired a shot"
