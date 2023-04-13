@@ -1,5 +1,5 @@
 class Game
-  attr_reader :board, :player, :computer, :place_ship, :valid_placement, :coordinates, :count, :valid_shot
+  attr_reader :board, :player, :computer
   def initialize
     @player = Player.new
     @player_ships = [@player.cruiser, @player.submarine]
@@ -19,6 +19,21 @@ class Game
     elsif
       p "Quit"
     end
+  end
+
+  def restart
+    game = Game.new
+    @player = Player.new
+    @player.board = Board.new
+    @player.cruiser = Ship.new("Cruiser", 3)
+    @player.submarine = Ship.new("Submarine")
+    @player_ships = [@player.cruiser, @player.submarine]
+    @computer = Computer.new
+    @computer.board = Board.new
+    @computer.cruiser = Ship.new("Cruiser", 3)
+    @computer.submarine = Ship.new("Submarine")
+    @computer_ships = [@computer.cruiser, @computer.submarine]
+    game.start_game
   end
 
   def player_place_ship
