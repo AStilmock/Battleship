@@ -33,7 +33,6 @@ class Game
         @player.board.place(ship, coordinates)
       end
     end
-    @player.board.render(ship_pos = true)
   end
 
   def computer_place_ship
@@ -45,14 +44,14 @@ class Game
         coordinates
         @computer.board.place(ship, coordinates)
     end
-    @computer.board.render(true)
   end
   
   def game_over?
-    false
+    game_over = false
     if computer.cruiser.sunk? && computer.submarine.sunk?
       p "You win!!!"
       game_over = true
+      start_game
       p "=============COMPUTER BOARD============="
       @computer.board.render
       p "==============PLAYER BOARD=============="
@@ -61,6 +60,7 @@ class Game
       p "You loose"
       `say -v Bad "di di di di di di di di di di di di di di di di di di di di di di di di di di di di di di di di"`
       game_over = true
+      start_game
     end
   end
 
@@ -71,17 +71,24 @@ class Game
       p "==============PLAYER BOARD=============="
       @player.board.render(true)
       p "Enter the coordinates for your shot"
-      coord = nil
-      coord = gets.chomp.upcase
-      until @computer.board.cells[coord].fired_upon? == false && @computer.board.valid_coordinate?(coord) == true
+      coord1 = nil
+      coord1 = gets.chomp.upcase
+      until @computer.board.valid_coordinate?(coord1) == true
         p "Invalid coordinates, please choose a coordinate for your shot"
-        coord = gets.chomp.upcase
+        coord1 = gets.chomp.upcase
       end
-      @computer.board.cells[coord].fire_upon
+      coord1
+      @computer.board.cells[coord1].player_fire_upon
+      game_over?
       p "The computer has fired a shot"
-      coord = @player.board.cells.keys.sample
-      @player.board.cells[coord].fire_upon
+      coord2 = @player.board.cells.keys.sample
+      until @player.board.valid_coordinate?(coord2) == true
+        coord2 = @player.board.cells.keys.sample
+      end
+      coord2
+      @player.board.cells[coord2].computer_fire_upon
     end
+    game_over?
   end
 end
 

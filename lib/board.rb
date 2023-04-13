@@ -37,6 +37,7 @@ class Board
     
   def valid_coordinate?(coordinate)
     if cells.has_key?(coordinate)
+      # cells[coordinate].fired_upon? == false &&
       true
     else
       false
